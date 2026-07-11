@@ -9,7 +9,7 @@ export default function Navbar(isLoggedIn) {
         <Link to="/signup">
           <Button variant="ghost">Signup</Button>
         </Link>
-        <Link to="/">
+        <Link to="/login">
           <Button variant="default">Login</Button>
         </Link>
       </nav>
