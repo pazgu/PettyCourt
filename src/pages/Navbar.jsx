@@ -4,7 +4,9 @@ import { Link } from "react-router-dom";
 export default function Navbar(isLoggedIn) {
   return (
     <header className="flex items-center justify-between px-4 py-2 border-b bg-background">
-      <div className="font-semibold">Objection</div>
+      <Link to="/">
+        <div className="font-semibold">Objection</div>
+      </Link>
       <nav className="flex gap-2">
         <Link to="/signup">
           <Button variant="ghost">Signup</Button>
