@@ -24,6 +24,16 @@ class CaseStore {
     submit: "",
   };
 
+  votesCache = {};
+
+  cases = [];
+  isLoadingCases = false;
+
+  searchQuery = "";
+  statusFilter = "all";
+  categoryFilter = "all";
+  sortBy = "newest";
+
   constructor() {
     makeAutoObservable(this);
   }
