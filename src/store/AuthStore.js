@@ -11,11 +11,20 @@ class AuthStore {
     makeAutoObservable(this);
   }
 
-  async signup({ name, email, password, confirmPassword }) {
+  async signup({ email, password, confirmPassword }) {
     runInAction(() => {
       this.error = "";
       this.loading = true;
     });
+
+    if(password.length <6){
+      runInAction(() => {
+        this.error = "Password must be at least 6 characters long";
+        this.loading = false;
+      });
+      return false;
+    }
+
     if (password !== confirmPassword) {
       runInAction(() => {
         this.error = "Passwords do not match";
@@ -31,7 +40,7 @@ class AuthStore {
 
     if (error) {
       runInAction(() => {
-        this.error = error;
+        this.error = error.message;
         this.loading = false;
       });
       return false;
@@ -39,7 +48,6 @@ class AuthStore {
 
     await supabase.from("profiles").insert({
       id: data.user.id,
-      username: name,
       email,
     });
 
