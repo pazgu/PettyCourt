@@ -14,7 +14,10 @@ export default observer(function Navbar({ isLoggedIn }) {
       <nav className="flex items-center gap-2">
         {isLoggedIn ? (
           <>
-            <Link to="/profile">
+            <Link to="/my-cases">
+              <div>My Cases</div>
+            </Link>
+            <Link to="#">
               <Button variant="ghost">
                 <User className="h-4 w-4" />
               </Button>

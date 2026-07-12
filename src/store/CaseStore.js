@@ -14,6 +14,7 @@ class CaseStore {
   isSubmitting = false;
 
   currentCase = null;
+  myCases = null;
   isLoadingCase = false;
 
   error = {
@@ -148,6 +149,32 @@ class CaseStore {
       console.error("Error fetching case details from Supabase:", err);
       runInAction(() => {
         this.currentCase = null;
+      });
+    } finally {
+      runInAction(() => {
+        this.isLoadingCase = false;
+      });
+    }
+  }
+
+  async loadMyCases() {
+    this.isLoadingCase = true;
+    this.myCases = null;
+
+    try {
+      const { data, error: fetchError } = await supabase
+        .from("cases")
+        .select("*");
+
+      if (fetchError) throw fetchError;
+
+      runInAction(() => {
+        this.myCases = data;
+      });
+    } catch (err) {
+      console.error("Error fetching case details from Supabase:", err);
+      runInAction(() => {
+        this.myCases = null;
       });
     } finally {
       runInAction(() => {
