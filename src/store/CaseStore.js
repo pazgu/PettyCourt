@@ -25,6 +25,14 @@ class CaseStore {
 
   votesCache = {};
 
+  cases = [];
+  isLoadingCases = false;
+
+  searchQuery = "";
+  statusFilter = "all";
+  categoryFilter = "all";
+  sortBy = "newest";
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -231,6 +239,74 @@ class CaseStore {
     } catch (err) {
       console.error("Failed to process vote:", err);
     }
+  }
+
+  async loadAllCases() {
+    this.isLoadingCases = true;
+    try {
+      const { data, error } = await supabase
+        .from("cases")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+
+      runInAction(() => {
+        this.cases = data || [];
+      });
+
+      if (data) {
+        data.forEach((c) => this.loadVotesForCase(c.id));
+      }
+    } catch (err) {
+      console.error("Error loading cases catalog:", err);
+    } finally {
+      runInAction(() => {
+        this.isLoadingCases = false;
+      });
+    }
+  }
+
+  get filteredCases() {
+    let list = [...this.cases];
+
+    if (this.searchQuery) {
+      const query = this.searchQuery.toLowerCase();
+      list = list.filter(
+        (c) =>
+          c.title?.toLowerCase().includes(query) ||
+          c.complaint?.toLowerCase().includes(query),
+      );
+    }
+
+    if (this.statusFilter !== "all") {
+      list = list.filter((c) => c.status === this.statusFilter);
+    }
+
+    if (this.categoryFilter !== "all") {
+      list = list.filter((c) => c.category === this.categoryFilter);
+    }
+
+    if (this.sortBy === "newest") {
+      list.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    } else if (this.sortBy === "oldest") {
+      list.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+    }
+
+    return list;
+  }
+
+  setSearchQuery(query) {
+    this.searchQuery = query;
+  }
+  setStatusFilter(status) {
+    this.statusFilter = status;
+  }
+  setCategoryFilter(category) {
+    this.categoryFilter = category;
+  }
+  setSortBy(sort) {
+    this.sortBy = sort;
   }
 }
 
