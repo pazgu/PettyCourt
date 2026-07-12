@@ -26,10 +26,10 @@ export function SignupForm({ ...props }) {
       <CardContent>
         <form onSubmit={props.onSubmit}>
           <FieldGroup>
-            <Field>
+            {/* <Field>
               <FieldLabel htmlFor="name">Full Name</FieldLabel>
               <Input id="name" name="name" type="text" placeholder="John Doe" required />
-            </Field>
+            </Field> */}
             <Field>
               <FieldLabel htmlFor="email">Email</FieldLabel>
               <Input
