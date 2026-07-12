@@ -12,6 +12,10 @@ class CaseStore {
   defense = "";
 
   isSubmitting = false;
+
+  currentCase = null;
+  isLoadingCase = false;
+
   error = {
     title: "",
     complaint: "",
@@ -25,6 +29,9 @@ class CaseStore {
 
   setField(field, value) {
     this[field] = value;
+    if (this.error && this.error[field]) {
+      this.error[field] = "";
+    }
   }
 
   resetForm() {
@@ -65,7 +72,6 @@ class CaseStore {
     }
 
     this.isSubmitting = true;
-    this.error = null;
 
     try {
       const currentUser = authStore.user;
@@ -118,6 +124,34 @@ class CaseStore {
     } finally {
       runInAction(() => {
         this.isSubmitting = false;
+      });
+    }
+  }
+
+  async loadCaseById(caseId) {
+    this.isLoadingCase = true;
+    this.currentCase = null;
+
+    try {
+      const { data, error: fetchError } = await supabase
+        .from("cases")
+        .select("*")
+        .eq("id", caseId)
+        .single();
+
+      if (fetchError) throw fetchError;
+
+      runInAction(() => {
+        this.currentCase = data;
+      });
+    } catch (err) {
+      console.error("Error fetching case details from Supabase:", err);
+      runInAction(() => {
+        this.currentCase = null;
+      });
+    } finally {
+      runInAction(() => {
+        this.isLoadingCase = false;
       });
     }
   }
