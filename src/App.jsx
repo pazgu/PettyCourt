@@ -9,6 +9,7 @@ import AddCaseModal from "./components/shared/cases/AddCaseModal";
 import { authStore } from "@/store/AuthStore";
 import { CaseDetailsPage } from "./pages/CaseDetails/index.jsx";
 import { MyCasesPage } from "./pages/MyCases/index.jsx";
+import { CaseFilters } from "./components/shared/caseFilters";
 
 export default observer(function App() {
   useEffect(() => {
