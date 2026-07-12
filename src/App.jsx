@@ -7,6 +7,7 @@ import Navbar from "./components/layout/Navbar";
 import Home from "./pages/Home/Home";
 import AddCaseModal from "./components/shared/cases/AddCaseModal";
 import { authStore } from "@/store/AuthStore";
+import { CaseDetailsPage } from "./pages/CaseDetails/index.jsx";
 
 export default observer(function App() {
   useEffect(() => {
@@ -23,6 +24,7 @@ export default observer(function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/add-case" element={<AddCaseModal />} />
+        <Route path="/case/:id" element={<CaseDetailsPage />} />
       </Routes>
     </BrowserRouter>
   );
