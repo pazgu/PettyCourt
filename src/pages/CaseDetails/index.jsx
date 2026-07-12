@@ -13,6 +13,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { VoteButtons } from "../../components/shared/VoteButtons";
 
 export const CaseDetailsPage = observer(() => {
   const { id } = useParams();
@@ -199,26 +200,12 @@ export const CaseDetailsPage = observer(() => {
           </div>
         </Card>
 
-        {/* votes functionality should be added here */}
         <Card className="shadow-sm bg-white rounded-xl border border-slate-200/60 overflow-hidden">
           <CardContent className="p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
             <span className="text-base font-medium text-slate-800 font-sans">
               Was justice served?
             </span>
-            <div className="flex items-center gap-3">
-              <Button
-                variant="outline"
-                className="bg-emerald-50/40 border-emerald-200 text-emerald-700 hover:bg-emerald-50 gap-2 font-medium px-4 py-2 rounded-xl text-sm cursor-not-allowed opacity-80"
-              >
-                <ThumbsUp className="h-4 w-4 text-emerald-600" />0
-              </Button>
-              <Button
-                variant="outline"
-                className="bg-rose-50/40 border-rose-200 text-rose-700 hover:bg-rose-50 gap-2 font-medium px-4 py-2 rounded-xl text-sm cursor-not-allowed opacity-80"
-              >
-                <ThumbsDown className="h-4 w-4 text-rose-600" />0
-              </Button>
-            </div>
+            <VoteButtons caseId={activeCase.id} />
           </CardContent>
         </Card>
       </div>
