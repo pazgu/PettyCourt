@@ -90,6 +90,12 @@ class AuthStore {
       this.session = null;
     });
   }
+
+  clearError() {
+    runInAction(() => {
+      this.error = "";
+    });
+  }
 }
 
 export const authStore = new AuthStore();

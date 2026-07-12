@@ -1,8 +1,14 @@
 import { observer } from "mobx-react-lite";
 import { authStore } from "@/store/AuthStore";
 import { LoginForm } from "@/components/shared/login-form";
+import { useEffect } from "react";
 
 function Login() {
+
+  useEffect(() => {
+      authStore.clearError();
+    }, []);
+
   async function handleLogin(e) {
     e.preventDefault();
 

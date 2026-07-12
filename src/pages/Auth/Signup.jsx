@@ -1,10 +1,14 @@
 import { SignupForm } from "@/components/shared/signup-form";
 import { observer } from "mobx-react-lite";
 import { authStore } from "@/store/AuthStore";
-
-
+import { useEffect } from "react";
 
 function Signup() {
+  
+  useEffect(() => {
+    authStore.clearError();
+  }, []);
+
   async function handleSignup(e) {
     e.preventDefault();
 
@@ -21,16 +25,14 @@ function Signup() {
       window.location.href = "/login";
     }
   }
-  
-    return (
+
+  return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm">
         <SignupForm onSubmit={handleSignup} />
 
         {authStore.error && (
-          <p className="mt-4 text-center text-red-500">
-            {authStore.error}
-          </p>
+          <p className="mt-4 text-center text-red-500">{authStore.error}</p>
         )}
 
         {authStore.loading && (
