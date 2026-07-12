@@ -23,6 +23,8 @@ class CaseStore {
     submit: "",
   };
 
+  votesCache = {};
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -153,6 +155,81 @@ class CaseStore {
       runInAction(() => {
         this.isLoadingCase = false;
       });
+    }
+  }
+
+  async loadVotesForCase(caseId) {
+    try {
+      const { data: votes, error } = await supabase
+        .from("votes")
+        .select("vote, user_id")
+        .eq("case_id", caseId);
+
+      if (error) throw error;
+
+      const currentUser = authStore.user;
+      let justiceCount = 0;
+      let mistrialCount = 0;
+      let userVote = null;
+
+      votes.forEach((v) => {
+        if (v.vote === "justice") justiceCount++;
+        if (v.vote === "mistrial") mistrialCount++;
+        if (currentUser && v.user_id === currentUser.id) {
+          userVote = v.vote;
+        }
+      });
+
+      runInAction(() => {
+        this.votesCache[caseId] = {
+          justice: justiceCount,
+          mistrial: mistrialCount,
+          userVote: userVote,
+        };
+      });
+    } catch (err) {
+      console.error("Error loading votes:", err);
+    }
+  }
+
+  async vote(caseId, type) {
+    const currentUser = authStore.user;
+    if (!currentUser) {
+      alert("You must be logged in to cast a vote!");
+      return;
+    }
+
+    const current = this.votesCache[caseId] || {
+      justice: 0,
+      mistrial: 0,
+      userVote: null,
+    };
+
+    try {
+      if (current.userVote === type) {
+        const { error } = await supabase
+          .from("votes")
+          .delete()
+          .eq("case_id", caseId)
+          .eq("user_id", currentUser.id);
+
+        if (error) throw error;
+      } else {
+        const { error } = await supabase.from("votes").upsert(
+          {
+            case_id: caseId,
+            user_id: currentUser.id,
+            vote: type,
+          },
+          { onConflict: "case_id,user_id" },
+        );
+
+        if (error) throw error;
+      }
+
+      await this.loadVotesForCase(caseId);
+    } catch (err) {
+      console.error("Failed to process vote:", err);
     }
   }
 }
