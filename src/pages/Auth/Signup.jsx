@@ -1,4 +1,4 @@
-import { SignupForm } from "@/components/ui/signup-form";
+import { SignupForm } from "@/components/shared/signup-form";
 import { observer } from "mobx-react-lite";
 import { authStore } from "@/store/AuthStore";
 
