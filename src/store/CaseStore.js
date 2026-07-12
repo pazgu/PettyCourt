@@ -1,7 +1,9 @@
 // MobX state domain orchestrating fetched case catalogs, active filters,
 // case insertions, and synchronous rating mutations.
 
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
+import { supabase } from "@/utils/supabase";
+import { authStore } from "./AuthStore";
 
 class CaseStore {
   title = "";
@@ -10,7 +12,12 @@ class CaseStore {
   defense = "";
 
   isSubmitting = false;
-  error = {};
+  error = {
+    title: "",
+    complaint: "",
+    defense: "",
+    submit: "",
+  };
 
   constructor() {
     makeAutoObservable(this);
@@ -25,12 +32,17 @@ class CaseStore {
     this.category = "";
     this.complaint = "";
     this.defense = "";
-    this.error = {};
+    this.error = {
+      title: "",
+      complaint: "",
+      defense: "",
+      submit: "",
+    };
     this.isSubmitting = false;
   }
 
   async submitCase() {
-    this.error = {};
+    this.error = { title: "", complaint: "", defense: "", submit: "" };
     let hasErrors = false;
 
     if (!this.title) {
@@ -56,27 +68,57 @@ class CaseStore {
     this.error = null;
 
     try {
+      const currentUser = authStore.user;
+
+      if (!currentUser) {
+        throw new Error("You must be logged in to file a new case.");
+      }
+
       const caseData = {
         title: this.title,
-        category: this.category,
+        category: this.category || "General",
         complaint: this.complaint,
         defense: this.defense,
+        plaintiff_id: currentUser.id,
+        status: "awaiting_verdict",
       };
 
       console.log("Sending case to server...", caseData);
 
-      // to be replaced with axios.post('/api/cases', caseData)
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      const { data, error: insertError } = await supabase
+        .from("cases")
+        .insert([caseData])
+        .select();
 
-      console.log("Case successfully created!");
-      this.resetForm();
+      if (insertError) {
+        throw insertError;
+      }
+
+      console.log("Case successfully created!", data);
+
+      runInAction(() => {
+        this.resetForm();
+      });
+
       return true;
     } catch (err) {
       console.error("Failed to submit case:", err);
-      this.error.submit = "Something went wrong. Please try again.";
+
+      runInAction(() => {
+        this.error = this.error || {
+          title: "",
+          complaint: "",
+          defense: "",
+          submit: "",
+        };
+        this.error.submit =
+          err.message || "Something went wrong. Please try again.";
+      });
       return false;
     } finally {
-      this.isSubmitting = false;
+      runInAction(() => {
+        this.isSubmitting = false;
+      });
     }
   }
 }
