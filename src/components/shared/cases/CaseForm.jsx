@@ -9,11 +9,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Gavel, FolderPlus } from "lucide-react";
+import { Gavel, FolderPlus, Loader2 } from "lucide-react";
+import { observer } from "mobx-react-lite";
+import { caseStore } from "../../../store/CaseStore";
 
-export function CaseForm() {
+export const CaseForm = observer(({ onSuccess }) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const success = await caseStore.submitCase();
+    if (success && onSuccess) {
+      onSuccess();
+    }
+  };
+
   return (
-    <div className="space-y-6 text-right">
+    <div className="space-y-6 text-right" dir="ltr">
       <div className="flex flex-col items-center gap-2 text-center">
         <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-orange-100 text-orange-600">
           <FolderPlus className="h-6 w-6" />
@@ -25,7 +35,15 @@ export function CaseForm() {
           Two sides, one impartial(ish) judge. Make your case.
         </p>
       </div>
+
       <hr className="border-neutral-200" />
+
+      {caseStore.error?.submit && (
+        <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg text-center">
+          {caseStore.error.submit}
+        </div>
+      )}
+
       <div className="space-y-4">
         <div className="space-y-2">
           <Label
@@ -36,9 +54,15 @@ export function CaseForm() {
           </Label>
           <Input
             id="title"
+            value={caseStore.title}
+            onChange={(e) => caseStore.setField("title", e.target.value)}
             placeholder="My roommate ate my clearly labeled leftovers"
-            className="focus-visible:ring-orange-500"
+            className="focus-visible:ring-primary"
+            disabled={caseStore.isSubmitting}
           />
+          {caseStore.error?.title && (
+            <p className="text-xs text-red-500 mt-1">{caseStore.error.title}</p>
+          )}
         </div>
 
         <div className="space-y-2">
@@ -48,8 +72,12 @@ export function CaseForm() {
           >
             Category
           </Label>
-          <Select>
-            <SelectTrigger id="category" className="focus:ring-orange-500">
+          <Select
+            value={caseStore.category}
+            onValueChange={(value) => caseStore.setField("category", value)}
+            disabled={caseStore.isSubmitting}
+          >
+            <SelectTrigger id="category" className="focus:ring-primary">
               <SelectValue placeholder="Select a category" />
             </SelectTrigger>
             <SelectContent>
@@ -70,9 +98,17 @@ export function CaseForm() {
           </Label>
           <Textarea
             id="complaint"
+            value={caseStore.complaint}
+            onChange={(e) => caseStore.setField("complaint", e.target.value)}
             placeholder="State the facts of the case. The court values detail and drama in equal measure."
-            className="min-h-[100px] resize-none focus-visible:ring-orange-500"
+            className="min-h-[140px] resize-none focus-visible:ring-primary"
+            disabled={caseStore.isSubmitting}
           />
+          {caseStore.error?.complaint && (
+            <p className="text-xs text-red-500 mt-1">
+              {caseStore.error.complaint}
+            </p>
+          )}
         </div>
 
         <div className="space-y-2">
@@ -84,9 +120,17 @@ export function CaseForm() {
           </Label>
           <Textarea
             id="defense"
+            value={caseStore.defense}
+            onChange={(e) => caseStore.setField("defense", e.target.value)}
             placeholder="Now argue the other side. Represent them fairly — the judge punishes strawman defenses."
-            className="min-h-[100px] resize-none focus-visible:ring-orange-500"
+            className="min-h-[140px] resize-none focus-visible:ring-primary"
+            disabled={caseStore.isSubmitting}
           />
+          {caseStore.error?.defense && (
+            <p className="text-xs text-red-500 mt-1">
+              {caseStore.error.defense}
+            </p>
+          )}
         </div>
       </div>
 
@@ -95,10 +139,23 @@ export function CaseForm() {
         merits.
       </p>
 
-      <Button className="w-full bg-[#D94414] hover:bg-[#BF3A0F] text-white py-6 text-base font-medium transition-colors flex items-center justify-center gap-2 rounded-xl cursor-pointer">
-        <Gavel className="h-5 w-5" />
-        Submit to the court
+      <Button
+        onClick={handleSubmit}
+        disabled={caseStore.isSubmitting}
+        className="w-full bg-primary hover:bg-primary/90 text-white py-6 text-base font-medium transition-colors flex items-center justify-center gap-2 rounded-xl cursor-pointer disabled:opacity-50"
+      >
+        {caseStore.isSubmitting ? (
+          <>
+            <Loader2 className="h-5 w-5 animate-spin" />
+            Submitting case...
+          </>
+        ) : (
+          <>
+            <Gavel className="h-5 w-5" />
+            Submit to the court
+          </>
+        )}
       </Button>
     </div>
   );
-}
+});
