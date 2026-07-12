@@ -8,6 +8,7 @@ import Home from "./pages/Home/Home";
 import AddCaseModal from "./components/shared/cases/AddCaseModal";
 import { authStore } from "@/store/AuthStore";
 import { CaseDetailsPage } from "./pages/CaseDetails/index.jsx";
+import { CaseFilters } from "./components/shared/caseFilters";
 
 export default observer(function App() {
   useEffect(() => {
@@ -25,6 +26,7 @@ export default observer(function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/add-case" element={<AddCaseModal />} />
         <Route path="/case/:id" element={<CaseDetailsPage />} />
+        <Route path="/filter" element={<CaseFilters />} />
       </Routes>
     </BrowserRouter>
   );

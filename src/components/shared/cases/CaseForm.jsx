@@ -12,6 +12,7 @@ import {
 import { Gavel, FolderPlus, Loader2 } from "lucide-react";
 import { observer } from "mobx-react-lite";
 import { caseStore } from "../../../store/CaseStore";
+import { CATEGORIES } from "../../../utils/categories";
 
 export const CaseForm = observer(({ onSuccess }) => {
   const handleSubmit = async (e) => {
@@ -77,14 +78,19 @@ export const CaseForm = observer(({ onSuccess }) => {
             onValueChange={(value) => caseStore.setField("category", value)}
             disabled={caseStore.isSubmitting}
           >
-            <SelectTrigger id="category" className="focus:ring-primary">
+            <SelectTrigger
+              id="category"
+              className="focus:ring-primary rounded-xl"
+            >
               <SelectValue placeholder="Select a category" />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="food">Food crimes</SelectItem>
-              <SelectItem value="romance">Romantic disputes</SelectItem>
-              <SelectItem value="cleanliness">Roommate hygiene</SelectItem>
-              <SelectItem value="other">Other petty business</SelectItem>
+            <SelectContent className="rounded-xl">
+              {CATEGORIES.map((cat) => (
+                <SelectItem key={cat.id} value={cat.id}>
+                  <span className="mr-2">{cat.icon}</span>
+                  {cat.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
