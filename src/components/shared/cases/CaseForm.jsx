@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Gavel, FolderPlus, Loader2 } from "lucide-react";
+import { Gavel, FolderPlus, Info, Loader2 } from "lucide-react";
 import { observer } from "mobx-react-lite";
 import { caseStore } from "../../../store/CaseStore";
 
@@ -135,8 +135,8 @@ export const CaseForm = observer(({ onSuccess }) => {
       </div>
 
       <p className="text-xs text-neutral-400 flex items-center gap-1.5 justify-center">
-        <span>ⓘ</span> You write both pleas; the judge rules on the arguments'
-        merits.
+        <Info className="h-4 w-4" /> You write both pleas; the judge rules on
+        the arguments' merits.
       </p>
 
       <Button
