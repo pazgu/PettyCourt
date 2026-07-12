@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import { supabase } from "@/utils/supabase";
 
 class AuthStore {
@@ -12,12 +12,15 @@ class AuthStore {
   }
 
   async signup({ name, email, password, confirmPassword }) {
-    this.error = "";
-    this.loading = true;
-
+    runInAction(() => {
+      this.error = "";
+      this.loading = true;
+    });
     if (password !== confirmPassword) {
-      this.error = "Passwords do not match";
-      this.loading = false;
+      runInAction(() => {
+        this.error = "Passwords do not match";
+        this.loading = false;
+      });
       return false;
     }
 
@@ -27,8 +30,10 @@ class AuthStore {
     });
 
     if (error) {
-      this.error = error;
-      this.loading = false;
+      runInAction(() => {
+        this.error = error;
+        this.loading = false;
+      });
       return false;
     }
 
@@ -38,13 +43,17 @@ class AuthStore {
       email,
     });
 
-    this.loading = false;
+    runInAction(() => {
+      this.loading = false;
+    });
     return true;
   }
 
   async login({ email, password }) {
-    this.error = "";
-    this.loading = true;
+    runInAction(() => {
+      this.error = "";
+      this.loading = true;
+    });
 
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -52,25 +61,34 @@ class AuthStore {
     });
 
     if (error) {
-      this.error = error.message;
-      this.loading = false;
+      runInAction(() => {
+        this.error = error.message;
+        this.loading = false;
+      });
       return false;
     }
-    this.user = data.user;
-    this.session = data.session;
-    this.loading = false;
+
+    runInAction(() => {
+      this.user = data.user;
+      this.session = data.session;
+      this.loading = false;
+    });
     return true;
   }
 
   async loadUser() {
     const { data } = await supabase.auth.getUser();
-    this.user = data.user;
+    runInAction(() => {
+      this.user = data.user;
+    });
   }
 
   async logout() {
     await supabase.auth.signOut();
-    this.user = null;
-    this.session = null;
+    runInAction(() => {
+      this.user = null;
+      this.session = null;
+    });
   }
 }
 
