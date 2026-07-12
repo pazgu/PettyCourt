@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import Login from "./pages/Auth/Login";
 import Signup from "./pages/Auth/Signup";
@@ -7,14 +8,16 @@ import Home from "./pages/Home/Home";
 import AddCaseModal from "./components/shared/cases/AddCaseModal";
 import { authStore } from "@/store/AuthStore";
 
-export default function App() {
+export default observer(function App() {
   useEffect(() => {
     authStore.loadUser();
   }, []);
 
+  const isLoggedIn = !!authStore.user;
+
   return (
     <BrowserRouter>
-      <Navbar />
+      <Navbar isLoggedIn={isLoggedIn} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -23,4 +26,4 @@ export default function App() {
       </Routes>
     </BrowserRouter>
   );
-}
+});
