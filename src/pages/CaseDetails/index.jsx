@@ -2,18 +2,13 @@ import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { caseStore } from "../../store/CaseStore";
-import {
-  ChevronLeft,
-  Gavel,
-  ThumbsUp,
-  ThumbsDown,
-  Loader2,
-} from "lucide-react";
+import { ChevronLeft, Gavel, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { VoteButtons } from "../../components/shared/VoteButtons";
+import { cn } from "@/lib/utils";
 
 export const CaseDetailsPage = observer(() => {
   const { id } = useParams();
@@ -53,17 +48,7 @@ export const CaseDetailsPage = observer(() => {
     );
   }
 
-  //dummi data AI, should be replaced
-  const dummyVerdict = {
-    courtName: "COURT OF PETTY DISPUTES",
-    caseName: `Plaintiff v. Defendant`,
-    findings: `The Court finds that regarding "${activeCase.title}", the details presented in the complaint are substantial. The defense's argument, while noted, contains several logical gaps that cannot be overlooked in a modern petty court setting.`,
-    ruling:
-      "The Court rules partially in favor of the plaintiff. A clear boundary violation occurred, though the damages requested require calibration.",
-    order:
-      "It is hereby ordered that the parties engage in a mandatory 15-minute truce, and a formal text-message apology must be dispatched within 12 hours.",
-    winner: "plaintiff",
-  };
+  const verdict = caseStore.currentVerdict;
 
   return (
     <div className="min-h-screen bg-slate-50/50 py-8 px-4 sm:px-6 lg:px-8 font-sans">
@@ -155,7 +140,7 @@ export const CaseDetailsPage = observer(() => {
 
             <div className="space-y-1">
               <span className="text-[11px] font-bold tracking-widest text-amber-800/80 font-mono uppercase">
-                {dummyVerdict.courtName}
+                COURT OF PETTY DISPUTES
               </span>
               <h2 className="text-2xl sm:text-3xl font-serif font-bold text-slate-800">
                 Verdict of the Court of Petty Disputes
@@ -168,35 +153,33 @@ export const CaseDetailsPage = observer(() => {
 
             <hr className="w-full border-t border-amber-200/80 my-2" />
 
-            <div className="w-full text-left space-y-4 font-serif text-slate-700 text-sm sm:text-base leading-relaxed px-2 sm:px-6">
-              <p>
-                <strong className="font-sans font-bold text-xs uppercase tracking-wider text-slate-900 block mb-1">
-                  FINDINGS.
-                </strong>
-                {dummyVerdict.findings}
-              </p>
-              <p>
-                <strong className="font-sans font-bold text-xs uppercase tracking-wider text-slate-900 block mb-1">
-                  RULING.
-                </strong>
-                {dummyVerdict.ruling}
-              </p>
-              <p>
-                <strong className="font-sans font-bold text-xs uppercase tracking-wider text-slate-900 block mb-1">
-                  ORDER.
-                </strong>
-                {dummyVerdict.order}
-              </p>
-            </div>
+            {verdict ? (
+              <>
+                <div className="w-full text-left font-serif text-slate-700 text-sm sm:text-base leading-relaxed px-2 sm:px-6 whitespace-pre-line">
+                  {verdict.verdict_text}
+                </div>
 
-            <div className="w-full pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-muted-foreground px-2 sm:px-6">
-              <Badge className="bg-emerald-100 hover:bg-emerald-100 text-emerald-800 font-sans font-semibold border border-emerald-200 rounded-md px-2 py-0.5">
-                Winner: {dummyVerdict.winner}
-              </Badge>
-              <span className="italic font-serif text-slate-500">
-                Ruled {new Date(activeCase.created_at).toLocaleDateString()}
-              </span>
-            </div>
+                <div className="w-full pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-muted-foreground px-2 sm:px-6">
+                  <Badge
+                    className={cn(
+                      "font-sans font-semibold border rounded-md px-2 py-0.5 capitalize",
+                      verdict.winner === "split"
+                        ? "bg-yellow-100 hover:bg-yellow-100 text-yellow-800 border-yellow-200"
+                        : "bg-emerald-100 hover:bg-emerald-100 text-emerald-800 border-emerald-200",
+                    )}
+                  >
+                    Winner: {verdict.winner}
+                  </Badge>
+                  <span className="italic font-serif text-slate-500">
+                    Ruled {new Date(verdict.created_at).toLocaleDateString()}
+                  </span>
+                </div>
+              </>
+            ) : (
+              <p className="text-sm text-muted-foreground font-serif italic py-4">
+                The court has not yet ruled on this matter.
+              </p>
+            )}
           </div>
         </Card>
 
