@@ -1,4 +1,5 @@
 export const CATEGORIES = [
+  { id: "General", label: "General", icon: "⚖️" },
   { id: "Roommates", label: "Roommates", icon: "🚪" },
   { id: "Friendship", label: "Friendship", icon: "👥" },
   { id: "Family", label: "Family", icon: "🏠" },

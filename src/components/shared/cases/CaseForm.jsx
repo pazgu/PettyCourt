@@ -73,26 +73,28 @@ export const CaseForm = observer(({ onSuccess }) => {
           >
             Category
           </Label>
-          <Select
-            value={caseStore.category}
-            onValueChange={(value) => caseStore.setField("category", value)}
-            disabled={caseStore.isSubmitting}
-          >
-            <SelectTrigger
-              id="category"
-              className="focus:ring-primary rounded-xl"
-            >
-              <SelectValue placeholder="Select a category" />
-            </SelectTrigger>
-            <SelectContent className="rounded-xl">
-              {CATEGORIES.map((cat) => (
-                <SelectItem key={cat.id} value={cat.id}>
-                  <span className="mr-2">{cat.icon}</span>
-                  {cat.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+            {CATEGORIES.map((cat) => {
+              const isSelected = caseStore.category === cat.id;
+
+              return (
+                <button
+                  key={cat.id}
+                  type="button"
+                  disabled={caseStore.isSubmitting}
+                  onClick={() => caseStore.setField("category", cat.id)}
+                  className={`flex items-center justify-start gap-3 px-4 py-3 rounded-xl border text-sm font-medium transition-all duration-200 select-none ${
+                    isSelected
+                      ? "bg-amber-600 border-transparent text-white shadow-sm"
+                      : "bg-slate-50/50 border-slate-200 text-slate-700 hover:bg-slate-100 hover:border-slate-300"
+                  } ${caseStore.isSubmitting ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                >
+                  <span className="text-base shrink-0">{cat.icon}</span>
+                  <span className="truncate">{cat.label}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         <div className="space-y-2">
