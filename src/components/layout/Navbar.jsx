@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { Gavel, BriefcaseBusiness } from "lucide-react";
 import { authStore } from "@/store/AuthStore";
+import { toast } from "@/hooks/useToast";
 
 export default observer(function Navbar() {
   const navigate = useNavigate();
@@ -31,8 +32,12 @@ export default observer(function Navbar() {
               variant="outline"
               className="cursor-pointer"
               onClick={async () => {
-                await authStore.logout();
-                navigate("/login");
+                const success = await authStore.logout();
+                if (success) {
+                  navigate("/login");
+                } else {
+                  toast.error("Couldn't log out. Please try again.");
+                }
               }}
             >
               Logout

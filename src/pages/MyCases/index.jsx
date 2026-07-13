@@ -11,12 +11,16 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Briefcase } from "lucide-react";
 import AddCaseModal from "@/components/shared/cases/AddCaseModal";
 import { authStore } from "@/store/AuthStore";
+import { toast } from "@/hooks/useToast";
 
 export const MyCasesPage = observer(() => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    caseStore.loadMyCases();
+    caseStore.loadMyCases().then((ok) => {
+      if (ok === false)
+        toast.error("Couldn't load your cases. Please try again.");
+    });
   }, [authStore.user]);
 
   if (caseStore.isLoadingCase) {

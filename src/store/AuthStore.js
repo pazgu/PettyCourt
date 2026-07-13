@@ -119,8 +119,10 @@ class AuthStore {
         this.user = null;
         this.session = null;
       });
+      return true;
     } catch (err) {
       console.error("An unexpected error occurred while logging out.", err);
+      return false;
     }
   }
 
