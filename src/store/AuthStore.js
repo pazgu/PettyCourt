@@ -31,7 +31,7 @@ class AuthStore {
         this.error = "Passwords do not match";
         this.loading = false;
       });
-      
+
       return false;
     }
     try {
@@ -40,20 +40,16 @@ class AuthStore {
         password,
       });
 
-      if (error) {
+      if (!data.user) {
         runInAction(() => {
-          this.error = error.message;
+          if (error.message == {}) error.message = "";
+          this.error = error?.message || "Signup failed";
           this.loading = false;
         });
         return false;
       }
 
-      await supabase.from("profiles").insert({
-        id: data.user.id,
-        email,
-      });
-
-      runInAction(() => {
+       runInAction(() => {
         this.loading = false;
       });
 
