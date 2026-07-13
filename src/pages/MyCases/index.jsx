@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Briefcase } from "lucide-react";
 
 export const MyCasesPage = observer(() => {
   const navigate = useNavigate();
@@ -53,13 +54,8 @@ export const MyCasesPage = observer(() => {
           <ChevronLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
           Back to The Grand Hall
         </button>
-
         <div className="flex items-center gap-2">
-          <img
-            src="/attachments/YqYwfAT8CYFygeEcRhy8M.png"
-            alt="Docket icon"
-            className="h-6 w-6"
-          />
+          <Briefcase className="h-6 w-6 text-red-600" />
 
           <h1 className="text-3xl sm:text-4xl font-serif font-bold text-slate-900 tracking-tight leading-tight">
             My docket
@@ -71,7 +67,7 @@ export const MyCasesPage = observer(() => {
           >
             + File a case
           </button>
-        </div>
+        </div>{" "}
         <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
           {myCases.map((c) => (
             <Card
