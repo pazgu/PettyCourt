@@ -170,17 +170,59 @@ class CaseStore {
   async loadMyCases() {
     this.isLoadingCase = true;
     this.myCases = null;
+    
+    if (!authStore.user) {
+      return;
+    }
 
     try {
-      const { data, error: fetchError } = await supabase
+      const { data: cases, error: fetchError } = await supabase
         .from("cases")
         .select("*")
         .eq("plaintiff_id", authStore.user.id);
 
       if (fetchError) throw fetchError;
 
+      const enrichedCases = [];
+
+      for (const caseEntry of cases) {
+        try {
+          const { data: verdictData, error: verdictError } = await supabase
+            .from("cases")
+            .select(
+              `
+            id,
+            verdicts (
+              winner
+            )
+          `,
+            )
+            .eq("id", caseEntry.id)
+            .maybeSingle();
+
+          if (verdictError) {
+            console.error(
+              "Error fetching verdict for case:",
+              caseEntry.id,
+              verdictError,
+            );
+          }
+
+          enrichedCases.push({
+            ...caseEntry,
+            winner: verdictData?.verdicts?.winner || null,
+          });
+        } catch (innerErr) {
+          console.error("Unexpected error fetching verdict:", innerErr);
+          enrichedCases.push({
+            ...caseEntry,
+            winner: null,
+          });
+        }
+      }
+
       runInAction(() => {
-        this.myCases = data;
+        this.myCases = enrichedCases;
       });
     } catch (err) {
       console.error("Error fetching case details from Supabase:", err);
