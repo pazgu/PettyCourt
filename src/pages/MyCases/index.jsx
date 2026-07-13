@@ -11,6 +11,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Briefcase } from "lucide-react";
 import AddCaseModal from "@/components/shared/cases/AddCaseModal";
 import { authStore } from "@/store/AuthStore";
+import { toast } from "@/hooks/useToast";
 import {
   Dialog,
   DialogContent,
@@ -26,7 +27,10 @@ export const MyCasesPage = observer(() => {
   const [deleteError, setDeleteError] = useState("");
 
   useEffect(() => {
-    caseStore.loadMyCases();
+    caseStore.loadMyCases().then((ok) => {
+      if (ok === false)
+        toast.error("Couldn't load your cases. Please try again.");
+    });
   }, [authStore.user]);
 
   if (caseStore.isLoadingCase) {
