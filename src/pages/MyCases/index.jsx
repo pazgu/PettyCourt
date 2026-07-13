@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Briefcase } from "lucide-react";
+import AddCaseModal from "@/components/shared/cases/AddCaseModal";
 
 export const MyCasesPage = observer(() => {
   const navigate = useNavigate();
@@ -58,16 +59,13 @@ export const MyCasesPage = observer(() => {
           <Briefcase className="h-6 w-6 text-red-600" />
 
           <h1 className="text-3xl sm:text-4xl font-serif font-bold text-slate-900 tracking-tight leading-tight">
-            My docket
+            My Cases
           </h1>
 
-          <button
-            onClick={() => navigate("/add-case")}
-            className="ml-auto bg-orange-600 text-white text-sm font-semibold px-4 py-2 rounded-md hover:bg-orange-700 transition-colors"
-          >
-            + File a case
-          </button>
-        </div>{" "}
+          <div className="ml-auto">
+            <AddCaseModal />
+          </div>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
           {myCases.map((c) => (
             <Card

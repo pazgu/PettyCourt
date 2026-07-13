@@ -4,6 +4,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { supabase } from "@/utils/supabase";
 import { authStore } from "./AuthStore";
+import { requestVerdict } from "@/utils/edgeFunctions";
 
 class CaseStore {
   title = "";
@@ -14,6 +15,7 @@ class CaseStore {
   isSubmitting = false;
 
   currentCase = null;
+  currentVerdict = null;
   myCases = null;
   isLoadingCase = false;
 
@@ -111,13 +113,30 @@ class CaseStore {
         throw insertError;
       }
 
-      console.log("Case successfully created!", data);
+      const newCase = data?.[0];
+      if (!newCase) {
+        throw new Error("The case was not created. Please try again.");
+      }
+
+      // Ask the AI Judge to rule. If it fails, roll the case back so a case is
+      // never persisted without its verdict.
+      const { error: verdictError } = await requestVerdict(newCase.id);
+      if (verdictError) {
+        const { error: rollbackError } = await supabase
+          .from("cases")
+          .delete()
+          .eq("id", newCase.id);
+        if (rollbackError) {
+          console.error("Failed to roll back case after verdict error:", rollbackError);
+        }
+        throw new Error(verdictError);
+      }
 
       runInAction(() => {
         this.resetForm();
       });
 
-      return true;
+      return newCase.id;
     } catch (err) {
       console.error("Failed to submit case:", err);
 
@@ -142,6 +161,7 @@ class CaseStore {
   async loadCaseById(caseId) {
     this.isLoadingCase = true;
     this.currentCase = null;
+    this.currentVerdict = null;
 
     try {
       const { data, error: fetchError } = await supabase
@@ -155,10 +175,24 @@ class CaseStore {
       runInAction(() => {
         this.currentCase = data;
       });
+
+      // The verdict is optional (null until the AI Judge has ruled).
+      const { data: verdict, error: verdictError } = await supabase
+        .from("verdicts")
+        .select("*")
+        .eq("case_id", caseId)
+        .maybeSingle();
+
+      if (verdictError) throw verdictError;
+
+      runInAction(() => {
+        this.currentVerdict = verdict ?? null;
+      });
     } catch (err) {
       console.error("Error fetching case details from Supabase:", err);
       runInAction(() => {
         this.currentCase = null;
+        this.currentVerdict = null;
       });
     } finally {
       runInAction(() => {
