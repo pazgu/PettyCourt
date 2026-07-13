@@ -127,7 +127,10 @@ class CaseStore {
           .delete()
           .eq("id", newCase.id);
         if (rollbackError) {
-          console.error("Failed to roll back case after verdict error:", rollbackError);
+          console.error(
+            "Failed to roll back case after verdict error:",
+            rollbackError,
+          );
         }
         throw new Error(verdictError);
       }
@@ -204,7 +207,7 @@ class CaseStore {
   async loadMyCases() {
     this.isLoadingCase = true;
     this.myCases = null;
-    
+
     if (!authStore.user) {
       return;
     }
@@ -350,7 +353,14 @@ class CaseStore {
     try {
       const { data, error } = await supabase
         .from("cases")
-        .select("*")
+        .select(
+          `
+    *,
+    plaintiff_id (
+      username
+    )
+  `,
+        )
         .order("created_at", { ascending: false });
 
       if (error) throw error;
