@@ -62,7 +62,7 @@ export const MyCasesPage = observer(() => {
           </h1>
 
           <button
-            onClick={() => navigate("/file-case")}
+            onClick={() => navigate("/add-case")}
             className="ml-auto bg-orange-600 text-white text-sm font-semibold px-4 py-2 rounded-md hover:bg-orange-700 transition-colors"
           >
             + File a case
