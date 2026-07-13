@@ -6,6 +6,7 @@ class AuthStore {
   error = "";
   user = null;
   session = null;
+  initializing = true;
 
   constructor() {
     makeAutoObservable(this);
@@ -108,6 +109,10 @@ class AuthStore {
       });
     } catch (err) {
       console.error("An unexpected error occurred. Please try again.", err);
+    } finally {
+      runInAction(() => {
+        this.initializing = false;
+      });
     }
   }
 

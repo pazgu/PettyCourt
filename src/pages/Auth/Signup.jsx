@@ -2,8 +2,11 @@ import { SignupForm } from "@/components/shared/signup-form";
 import { observer } from "mobx-react-lite";
 import { authStore } from "@/store/AuthStore";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
+  const navigate = useNavigate();
+
   useEffect(() => {
     authStore.clearError();
   }, []);
@@ -21,7 +24,7 @@ function Signup() {
     });
 
     if (success) {
-      window.location.href = "/";
+      navigate("/", { replace: true });
     }
   }
 
