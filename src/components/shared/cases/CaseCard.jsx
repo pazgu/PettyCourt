@@ -85,7 +85,7 @@ export const CaseCard = observer(({ caseItem }) => {
   return (
     <Link
       to={`/case/${caseId}`}
-      className=" block w-full max-w-4xl mx-auto bg-card balanced-card rounded-3xl border border-slate-100 shadow-[0_2px_14px_rgba(0,0,0,0.02)] p-6 sm:p-8 space-y-5 transition-all duration-300 cursor-pointer hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:-translate-y-0.5"
+      className=" block w-full max-w-4xl mx-auto bg-card balanced-card rounded-3xl border border-slate-100 shadow-[0_2px_14px_rgba(0,0,0,0.02)] p-6 sm:p-8 space-y-4 transition-all duration-300 cursor-pointer hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:-translate-y-0.5"
     >
       <div className="flex justify-between items-start gap-4">
         <h2 className="text-xl sm:text-2xl font-serif font-bold text-slate-900 tracking-tight leading-snug">
@@ -96,12 +96,27 @@ export const CaseCard = observer(({ caseItem }) => {
         </span>
       </div>
 
-      <div className="flex items-center gap-3 flex-wrap border-b border-slate-50 pb-3">
+      <div className="flex items-center gap-3 flex-wrap border-b border-slate-50 pb-3 m-0">
         {renderVerdictBadge()}
 
         <span className="inline-flex items-center gap-1.5 bg-slate-50 text-slate-600 px-3 py-1.5 rounded-full text-xs font-medium border border-slate-200/60">
           <span>{categoryIcon}</span>
           {caseItem.category || "General"}
+        </span>
+      </div>
+
+      <div className="flex items-center gap-2 pt-2">
+        <div className="h-5 w-5 rounded-full bg-slate-100 border border-slate-200/60 flex items-center justify-center text-[10px] font-bold text-slate-500 uppercase shrink-0 select-none">
+          {caseItem.plaintiff_id?.username
+            ? caseItem.plaintiff_id.username[0]
+            : "A"}
+        </div>
+
+        <span className="text-xs font-medium text-slate-500 select-none">
+          {" "}
+          <span className="font-semibold text-slate-600">
+            {caseItem.plaintiff_id?.username || "Anonymous"}
+          </span>
         </span>
       </div>
 
