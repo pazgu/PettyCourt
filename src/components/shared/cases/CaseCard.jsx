@@ -85,7 +85,7 @@ export const CaseCard = observer(({ caseItem }) => {
   return (
     <Link
       to={`/case/${caseId}`}
-      className="block w-full max-w-4xl mx-auto bg-white rounded-3xl border border-slate-100 shadow-[0_2px_14px_rgba(0,0,0,0.02)] p-6 sm:p-8 space-y-5 transition-all duration-300 cursor-pointer hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:-translate-y-0.5"
+      className=" block w-full max-w-4xl mx-auto bg-card balanced-card rounded-3xl border border-slate-100 shadow-[0_2px_14px_rgba(0,0,0,0.02)] p-6 sm:p-8 space-y-5 transition-all duration-300 cursor-pointer hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:-translate-y-0.5"
     >
       <div className="flex justify-between items-start gap-4">
         <h2 className="text-xl sm:text-2xl font-serif font-bold text-slate-900 tracking-tight leading-snug">
@@ -106,7 +106,7 @@ export const CaseCard = observer(({ caseItem }) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
-        <div className="bg-slate-50/50 rounded-2xl p-4 border border-slate-100/60">
+        <div className="bg-orange-50/60 rounded-2xl p-4 border border-orange-200/50">
           <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">
             Complaint (Plaintiff)
           </h4>
@@ -115,7 +115,7 @@ export const CaseCard = observer(({ caseItem }) => {
           </p>
         </div>
 
-        <div className="bg-slate-50/50 rounded-2xl p-4 border border-slate-100/60">
+        <div className="bg-orange-50/60 rounded-2xl p-4 border border-orange-200/50">
           <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">
             Defense
           </h4>

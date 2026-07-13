@@ -90,7 +90,7 @@ export const CaseDetailsPage = observer(() => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Card className="border-t-4 border-t-orange-600 shadow-sm bg-white rounded-xl overflow-hidden">
+          <Card className="border-t-4 border-t-orange-600 shadow-sm bg-orange-50/60 rounded-xl overflow-hidden">
             <CardHeader className="flex flex-row items-start space-x-4 space-y-0 p-5 pb-3">
               <Avatar className="h-10 w-10 bg-orange-600 text-white font-bold">
                 <AvatarFallback>P</AvatarFallback>
@@ -109,7 +109,7 @@ export const CaseDetailsPage = observer(() => {
             </CardContent>
           </Card>
 
-          <Card className="border-t-4 border-t-indigo-400 shadow-sm bg-white rounded-xl overflow-hidden">
+          <Card className="border-t-4 border-t-indigo-400 shadow-sm bg-orange-50/60 rounded-xl overflow-hidden">
             <CardHeader className="flex flex-row items-start space-x-4 space-y-0 p-5 pb-3">
               <Avatar className="h-10 w-10 bg-slate-200 text-slate-600 font-bold border border-slate-300">
                 <AvatarFallback>D</AvatarFallback>
@@ -198,7 +198,7 @@ export const CaseDetailsPage = observer(() => {
           </div>
         </Card>
 
-        <Card className="shadow-sm bg-white rounded-xl border border-slate-200/60 overflow-hidden">
+        <Card className="shadow-sm bg-orange-50/60 rounded-xl border border-slate-200/60 overflow-hidden">
           <CardContent className="p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4">
             <span className="text-base font-medium text-slate-800 font-sans">
               Was justice served?

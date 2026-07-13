@@ -9,8 +9,8 @@ function Login() {
   const location = useLocation();
 
   useEffect(() => {
-      authStore.clearError();
-    }, []);
+    authStore.clearError();
+  }, []);
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -29,7 +29,7 @@ function Login() {
 
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-      <div className="w-full max-w-sm">
+      <div className="w-full max-w-lg">
         <LoginForm onSubmit={handleLogin} isLoading={authStore.loading} />
 
         {authStore.error && (
