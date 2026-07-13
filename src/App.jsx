@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import Login from "./pages/Auth/Login";
 import Signup from "./pages/Auth/Signup";
 import Navbar from "./components/layout/Navbar";
-import Home from "./pages/Home/Home";
+import { HomePage } from "./pages/Home/index";
 import AddCaseModal from "./components/shared/cases/AddCaseModal";
 import { authStore } from "@/store/AuthStore";
 import { CaseDetailsPage } from "./pages/CaseDetails/index.jsx";
@@ -22,7 +22,7 @@ export default observer(function App() {
     <BrowserRouter>
       <Navbar isLoggedIn={isLoggedIn} />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/add-case" element={<AddCaseModal />} />
