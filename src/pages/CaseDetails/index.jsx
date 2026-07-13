@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { VoteButtons } from "../../components/shared/VoteButtons";
 import { cn } from "@/lib/utils";
+import { parseVerdict } from "../../utils/formatters";
 
 export const CaseDetailsPage = observer(() => {
   const { id } = useParams();
@@ -49,6 +50,7 @@ export const CaseDetailsPage = observer(() => {
   }
 
   const verdict = caseStore.currentVerdict;
+  const verdictSections = verdict ? parseVerdict(verdict.verdict_text) : [];
 
   return (
     <div className="min-h-screen bg-slate-50/50 py-8 px-4 sm:px-6 lg:px-8 font-sans">
@@ -155,9 +157,22 @@ export const CaseDetailsPage = observer(() => {
 
             {verdict ? (
               <>
-                <div className="w-full text-left font-serif text-slate-700 text-sm sm:text-base leading-relaxed px-2 sm:px-6 whitespace-pre-line">
-                  {verdict.verdict_text}
-                </div>
+                {verdictSections.length ? (
+                  <div className="w-full text-left space-y-4 font-serif text-slate-700 text-sm sm:text-base leading-relaxed px-2 sm:px-6">
+                    {verdictSections.map((section) => (
+                      <div key={section.label}>
+                        <strong className="font-sans font-bold text-xs uppercase tracking-wider text-slate-900 block mb-1">
+                          {section.label}
+                        </strong>
+                        <p className="whitespace-pre-line">{section.body}</p>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="w-full text-left font-serif text-slate-700 text-sm sm:text-base leading-relaxed px-2 sm:px-6 whitespace-pre-line">
+                    {verdict.verdict_text}
+                  </div>
+                )}
 
                 <div className="w-full pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-muted-foreground px-2 sm:px-6">
                   <Badge
