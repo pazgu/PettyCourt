@@ -16,15 +16,14 @@ function Signup() {
 
     const form = new FormData(e.target);
 
-    const success = await authStore.signup({
-      name: form.get("name"),
+    let success = await authStore.signup({
       email: form.get("email"),
       password: form.get("password"),
       confirmPassword: form.get("confirm-password"),
     });
 
     if (success) {
-      navigate("/", { replace: true });
+      navigate("/login", { replace: true });
     }
   }
 

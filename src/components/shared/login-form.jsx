@@ -16,10 +16,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 
-
-export function LoginForm({ className, ...props }) {
+export function LoginForm({ className, onSubmit, isLoading }) {
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn("flex flex-col gap-6", className)}>
       <Card>
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
@@ -27,8 +26,9 @@ export function LoginForm({ className, ...props }) {
             Enter your email below to login to your account
           </CardDescription>
         </CardHeader>
+
         <CardContent>
-          <form onSubmit={props.onSubmit}>
+          <form onSubmit={onSubmit}>
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
@@ -40,15 +40,15 @@ export function LoginForm({ className, ...props }) {
                   required
                 />
               </Field>
+
               <Field>
-                <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
-                </div>
+                <FieldLabel htmlFor="password">Password</FieldLabel>
                 <Input id="password" name="password" type="password" required />
               </Field>
+
               <Field>
-                <Button type="submit" disabled={props.isLoading}>
-                  {props.isLoading ? (
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Logging in...
@@ -57,6 +57,7 @@ export function LoginForm({ className, ...props }) {
                     "Login"
                   )}
                 </Button>
+
                 <FieldDescription className="text-center">
                   Don&apos;t have an account? <a href="/signup">Sign up</a>
                 </FieldDescription>
