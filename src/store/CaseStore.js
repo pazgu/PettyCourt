@@ -174,7 +174,8 @@ class CaseStore {
     try {
       const { data, error: fetchError } = await supabase
         .from("cases")
-        .select("*");
+        .select("*")
+        .eq("plaintiff_id", authStore.user.id);
 
       if (fetchError) throw fetchError;
 
