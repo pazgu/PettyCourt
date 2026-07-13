@@ -28,7 +28,6 @@ export default observer(function App() {
         <Route path="/add-case" element={<AddCaseModal />} />
         <Route path="/my-cases" element={<MyCasesPage />} />
         <Route path="/case/:id" element={<CaseDetailsPage />} />
-        <Route path="/filter" element={<CaseFilters />} />
       </Routes>
     </BrowserRouter>
   );
