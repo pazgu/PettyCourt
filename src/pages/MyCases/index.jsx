@@ -73,7 +73,7 @@ export const MyCasesPage = observer(() => {
             <Card
               key={c.id}
               onClick={() => navigate(`/case/${c.id}`)}
-              className="border-t-1 border-t-orange-600 shadow-sm bg-white rounded-xl overflow-hidden cursor-pointer hover:bg-slate-50 transition"
+              className="border-t-1 border-t-orange-600 shadow-sm bg-card glass-card rounded-xl overflow-hidden cursor-pointer hover:bg-slate-50 transition"
             >
               <CardContent className="p-5 pt-0 text-lg text-slate-600 leading-relaxed font-bold">
                 <div className="flex">

@@ -14,7 +14,7 @@ import { CATEGORIES } from "../../utils/categories";
 
 export const CaseFilters = observer(() => {
   return (
-    <div className="w-full max-w-4xl mx-auto bg-white rounded-3xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] p-4 sm:p-6 md:p-8 space-y-6">
+    <div className="w-full max-w-4xl mx-auto bg-card balanced-card rounded-3xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] p-4 sm:p-6 md:p-8 space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
         <div className="relative md:col-span-8 w-full flex items-center">
           <Search className="absolute left-4 h-5 w-5 text-slate-400 pointer-events-none" />
