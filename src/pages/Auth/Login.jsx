@@ -2,8 +2,11 @@ import { observer } from "mobx-react-lite";
 import { authStore } from "@/store/AuthStore";
 import { LoginForm } from "@/components/shared/login-form";
 import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
       authStore.clearError();
@@ -20,7 +23,7 @@ function Login() {
     });
 
     if (success) {
-      window.location.href = "/";
+      navigate(location.state?.from?.pathname || "/", { replace: true });
     }
   }
 

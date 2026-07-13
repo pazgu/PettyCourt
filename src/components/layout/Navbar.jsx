@@ -4,8 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { User } from "lucide-react";
 import { authStore } from "@/store/AuthStore";
 
-export default observer(function Navbar({ isLoggedIn }) {
+export default observer(function Navbar() {
   const navigate = useNavigate();
+  const isLoggedIn = !!authStore.user;
   return (
     <header className="flex items-center justify-between px-4 py-2 border-b bg-background">
       <Link to="/">
