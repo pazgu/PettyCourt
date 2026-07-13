@@ -38,7 +38,7 @@ export const CaseFilters = observer(() => {
                 <SelectValue placeholder="Newest" />
               </div>
             </SelectTrigger>
-            <SelectContent className="rounded-2xl">
+            <SelectContent className="rounded-2xl ">
               <SelectItem value="newest">Newest</SelectItem>
               <SelectItem value="oldest">Oldest</SelectItem>
             </SelectContent>
