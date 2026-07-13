@@ -25,7 +25,6 @@ export default observer(function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/add-case" element={<AddCaseModal />} />
         <Route path="/my-cases" element={<MyCasesPage />} />
         <Route path="/case/:id" element={<CaseDetailsPage />} />
       </Routes>

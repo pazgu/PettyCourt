@@ -30,6 +30,7 @@ class AuthStore {
         this.error = "Passwords do not match";
         this.loading = false;
       });
+      
       return false;
     }
     try {
@@ -54,6 +55,7 @@ class AuthStore {
       runInAction(() => {
         this.loading = false;
       });
+
       return true;
     } catch (err) {
       runInAction(() => {
@@ -87,6 +89,7 @@ class AuthStore {
         this.session = data.session;
         this.loading = false;
       });
+
       return true;
     } catch (err) {
       runInAction(() => {
@@ -99,6 +102,7 @@ class AuthStore {
   async loadUser() {
     try {
       const { data } = await supabase.auth.getUser();
+
       runInAction(() => {
         this.user = data.user;
       });
