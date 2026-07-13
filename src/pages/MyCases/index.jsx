@@ -10,12 +10,13 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Briefcase } from "lucide-react";
 import AddCaseModal from "@/components/shared/cases/AddCaseModal";
+import { authStore } from "@/store/AuthStore";
 
 export const MyCasesPage = observer(() => {
   const navigate = useNavigate();
   useEffect(() => {
     caseStore.loadMyCases();
-  }, []);
+  }, [authStore.user]);
 
   if (caseStore.isLoadingCase) {
     return (
@@ -95,7 +96,7 @@ export const MyCasesPage = observer(() => {
                       className="bg-emerald-50 text-emerald-700 border border-emerald-200 gap-1 rounded-full text-xs py-0.5 px-3 font-medium"
                     >
                       <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                      {c.status}
+                      {c.winner}
                     </Badge>
                   </div>
                 </div>
