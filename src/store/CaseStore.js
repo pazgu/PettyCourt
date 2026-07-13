@@ -422,6 +422,42 @@ class CaseStore {
   setSortBy(sort) {
     this.sortBy = sort;
   }
+
+  async deleteCase(id) {
+  try {
+    runInAction(() => {
+      this.isLoadingCase = true;
+    });
+
+    const { error } = await supabase
+      .from("cases")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      console.error("Failed to delete case:", error.message);
+      runInAction(() => {
+        this.isLoadingCase = false;
+      });
+      return false;
+    }
+
+    runInAction(() => {
+      this.myCases = this.myCases.filter((myCase) => myCase.id !== id);
+      this.isLoadingCase = false;
+    });
+
+    return true;
+  } catch (err) {
+    console.error("Unexpected error deleting case:", err);
+    runInAction(() => {
+      this.isLoadingCase = false;
+    });
+    return false;
+  }
+}
+
+  
 }
 
 export const caseStore = new CaseStore();
