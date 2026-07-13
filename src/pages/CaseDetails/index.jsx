@@ -2,13 +2,7 @@ import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { caseStore } from "../../store/CaseStore";
-import {
-  ChevronLeft,
-  Gavel,
-  ThumbsUp,
-  ThumbsDown,
-  Loader2,
-} from "lucide-react";
+import { ChevronLeft, Gavel, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
