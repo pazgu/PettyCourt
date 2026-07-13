@@ -39,14 +39,6 @@ export const CaseCard = observer(({ caseItem }) => {
   const justicePercent =
     totalVotes > 0 ? (voteData.justice / totalVotes) * 100 : 50;
 
-  let verdictText = "Awaiting verdict";
-  if (totalVotes > 0) {
-    verdictText =
-      voteData.justice >= voteData.mistrial
-        ? "Ruled for the plaintiff"
-        : "Ruled a mistrial";
-  }
-
   const renderVerdictBadge = () => {
     if (totalVotes === 0) {
       return (
@@ -95,7 +87,6 @@ export const CaseCard = observer(({ caseItem }) => {
       to={`/case/${caseId}`}
       className="block w-full max-w-4xl mx-auto bg-white rounded-3xl border border-slate-100 shadow-[0_2px_14px_rgba(0,0,0,0.02)] p-6 sm:p-8 space-y-5 transition-all duration-300 cursor-pointer hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:-translate-y-0.5"
     >
-      {/* כותרת ומספר תיק */}
       <div className="flex justify-between items-start gap-4">
         <h2 className="text-xl sm:text-2xl font-serif font-bold text-slate-900 tracking-tight leading-snug">
           {caseItem.title}
@@ -105,7 +96,6 @@ export const CaseCard = observer(({ caseItem }) => {
         </span>
       </div>
 
-      {/* שורת תגים עליונה (קטגוריה וסטטוס מעוצב) */}
       <div className="flex items-center gap-3 flex-wrap border-b border-slate-50 pb-3">
         {renderVerdictBadge()}
 
@@ -115,9 +105,7 @@ export const CaseCard = observer(({ caseItem }) => {
         </span>
       </div>
 
-      {/* 🏛️ תצוגה מקדימה כפולה: טיעוני תביעה והגנה */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
-        {/* טור תביעה / תלונה */}
         <div className="bg-slate-50/50 rounded-2xl p-4 border border-slate-100/60">
           <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">
             Complaint (Plaintiff)
@@ -127,7 +115,6 @@ export const CaseCard = observer(({ caseItem }) => {
           </p>
         </div>
 
-        {/* טור הגנה */}
         <div className="bg-slate-50/50 rounded-2xl p-4 border border-slate-100/60">
           <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1.5">
             Defense
@@ -138,10 +125,8 @@ export const CaseCard = observer(({ caseItem }) => {
         </div>
       </div>
 
-      {/* אזור הצבעות אינטראקטיבי תחתון */}
       <div className="space-y-3 pt-2" onClick={(e) => e.preventDefault()}>
         <div className="flex items-center gap-4">
-          {/* כפתור לייק (Justice Served) */}
           <button
             type="button"
             disabled={!isAuthenticated}
@@ -164,7 +149,6 @@ export const CaseCard = observer(({ caseItem }) => {
             <span>{voteData.justice}</span>
           </button>
 
-          {/* ה-Progress Bar */}
           <div className="w-full h-2.5 bg-rose-100 rounded-full overflow-hidden flex">
             <div
               className="h-full bg-emerald-500 rounded-l-full transition-all duration-500 ease-out"
@@ -172,7 +156,6 @@ export const CaseCard = observer(({ caseItem }) => {
             />
           </div>
 
-          {/* כפתור דיסלייק (Mistrial) */}
           <button
             type="button"
             disabled={!isAuthenticated}
