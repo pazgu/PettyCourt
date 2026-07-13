@@ -52,6 +52,12 @@ export const CaseDetailsPage = observer(() => {
   const verdict = caseStore.currentVerdict;
   const verdictSections = verdict ? parseVerdict(verdict.verdict_text) : [];
 
+  const winnerBadgeStyles = {
+    plaintiff: "bg-emerald-100 hover:bg-emerald-100 text-emerald-800 border-emerald-200",
+    defendant: "bg-rose-100 hover:bg-rose-100 text-rose-800 border-rose-200",
+    split: "bg-yellow-100 hover:bg-yellow-100 text-yellow-800 border-yellow-200",
+  };
+
   return (
     <div className="min-h-screen bg-slate-50/50 py-8 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-3xl mx-auto space-y-6">
@@ -178,9 +184,7 @@ export const CaseDetailsPage = observer(() => {
                   <Badge
                     className={cn(
                       "font-sans font-semibold border rounded-md px-2 py-0.5 capitalize",
-                      verdict.winner === "split"
-                        ? "bg-yellow-100 hover:bg-yellow-100 text-yellow-800 border-yellow-200"
-                        : "bg-emerald-100 hover:bg-emerald-100 text-emerald-800 border-emerald-200",
+                      winnerBadgeStyles[verdict.winner] ?? winnerBadgeStyles.split,
                     )}
                   >
                     Winner: {verdict.winner}
