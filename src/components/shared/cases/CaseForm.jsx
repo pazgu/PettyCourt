@@ -9,17 +9,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Gavel, FolderPlus, Loader2 } from "lucide-react";
+import { Gavel, FolderPlus, Info, Loader2 } from "lucide-react";
 import { observer } from "mobx-react-lite";
+import { useNavigate } from "react-router-dom";
 import { caseStore } from "../../../store/CaseStore";
 import { CATEGORIES } from "../../../utils/categories";
 
 export const CaseForm = observer(({ onSuccess }) => {
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const success = await caseStore.submitCase();
-    if (success && onSuccess) {
-      onSuccess();
+
+    const caseId = await caseStore.submitCase();
+    
+    if (caseId) {
+      onSuccess?.();
+      navigate(`/case/${caseId}`);
     }
   };
 
@@ -143,8 +149,8 @@ export const CaseForm = observer(({ onSuccess }) => {
       </div>
 
       <p className="text-xs text-neutral-400 flex items-center gap-1.5 justify-center">
-        <span>ⓘ</span> You write both pleas; the judge rules on the arguments'
-        merits.
+        <Info className="h-4 w-4" /> You write both pleas; the judge rules on
+        the arguments' merits.
       </p>
 
       <Button
