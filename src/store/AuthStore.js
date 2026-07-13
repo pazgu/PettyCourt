@@ -11,11 +11,20 @@ class AuthStore {
     makeAutoObservable(this);
   }
 
-  async signup({ name, email, password, confirmPassword }) {
+  async signup({ email, password, confirmPassword }) {
     runInAction(() => {
       this.error = "";
       this.loading = true;
     });
+
+    if (password.length < 6) {
+      runInAction(() => {
+        this.error = "Password must be at least 6 characters long";
+        this.loading = false;
+      });
+      return false;
+    }
+
     if (password !== confirmPassword) {
       runInAction(() => {
         this.error = "Passwords do not match";
@@ -23,30 +32,35 @@ class AuthStore {
       });
       return false;
     }
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
 
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
+      if (error) {
+        runInAction(() => {
+          this.error = error.message;
+          this.loading = false;
+        });
+        return false;
+      }
 
-    if (error) {
+      await supabase.from("profiles").insert({
+        id: data.user.id,
+        email,
+      });
+
       runInAction(() => {
-        this.error = error;
         this.loading = false;
       });
-      return false;
+      return true;
+    } catch (err) {
+      runInAction(() => {
+        this.error = "An unexpected error occurred. Please try again.";
+        this.loading = false;
+      });
     }
-
-    await supabase.from("profiles").insert({
-      id: data.user.id,
-      username: name,
-      email,
-    });
-
-    runInAction(() => {
-      this.loading = false;
-    });
-    return true;
   }
 
   async login({ email, password }) {
@@ -54,41 +68,55 @@ class AuthStore {
       this.error = "";
       this.loading = true;
     });
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+      if (error) {
+        runInAction(() => {
+          this.error = error.message;
+          this.loading = false;
+        });
+        return false;
+      }
 
-    if (error) {
       runInAction(() => {
-        this.error = error.message;
+        this.user = data.user;
+        this.session = data.session;
         this.loading = false;
       });
-      return false;
+      return true;
+    } catch (err) {
+      runInAction(() => {
+        this.error = "An unexpected error occurred. Please try again.";
+        this.loading = false;
+      });
     }
-
-    runInAction(() => {
-      this.user = data.user;
-      this.session = data.session;
-      this.loading = false;
-    });
-    return true;
   }
 
   async loadUser() {
-    const { data } = await supabase.auth.getUser();
-    runInAction(() => {
-      this.user = data.user;
-    });
+    try {
+      const { data } = await supabase.auth.getUser();
+      runInAction(() => {
+        this.user = data.user;
+      });
+    } catch (err) {
+      console.error("An unexpected error occurred. Please try again.", err);
+    }
   }
 
   async logout() {
-    await supabase.auth.signOut();
-    runInAction(() => {
-      this.user = null;
-      this.session = null;
-    });
+    try {
+      await supabase.auth.signOut();
+      runInAction(() => {
+        this.user = null;
+        this.session = null;
+      });
+    } catch (err) {
+      console.error("An unexpected error occurred while logging out.", err);
+    }
   }
 
   clearError() {

@@ -4,7 +4,6 @@ import { authStore } from "@/store/AuthStore";
 import { useEffect } from "react";
 
 function Signup() {
-  
   useEffect(() => {
     authStore.clearError();
   }, []);
@@ -22,7 +21,7 @@ function Signup() {
     });
 
     if (success) {
-      window.location.href = "/login";
+      window.location.href = "/";
     }
   }
 
