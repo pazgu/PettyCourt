@@ -191,12 +191,15 @@ class CaseStore {
       runInAction(() => {
         this.currentVerdict = verdict ?? null;
       });
+
+      return true;
     } catch (err) {
       console.error("Error fetching case details from Supabase:", err);
       runInAction(() => {
         this.currentCase = null;
         this.currentVerdict = null;
       });
+      return false;
     } finally {
       runInAction(() => {
         this.isLoadingCase = false;
@@ -209,7 +212,10 @@ class CaseStore {
     this.myCases = null;
 
     if (!authStore.user) {
-      return;
+      runInAction(() => {
+        this.isLoadingCase = false;
+      });
+      return true;
     }
 
     try {
@@ -261,11 +267,14 @@ class CaseStore {
       runInAction(() => {
         this.myCases = enrichedCases;
       });
+
+      return true;
     } catch (err) {
       console.error("Error fetching case details from Supabase:", err);
       runInAction(() => {
         this.myCases = null;
       });
+      return false;
     } finally {
       runInAction(() => {
         this.isLoadingCase = false;
@@ -372,8 +381,11 @@ class CaseStore {
       if (data) {
         data.forEach((c) => this.loadVotesForCase(c.id));
       }
+
+      return true;
     } catch (err) {
       console.error("Error loading cases catalog:", err);
+      return false;
     } finally {
       runInAction(() => {
         this.isLoadingCases = false;

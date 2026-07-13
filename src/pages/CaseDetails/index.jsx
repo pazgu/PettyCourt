@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { VoteButtons } from "../../components/shared/VoteButtons";
 import { cn } from "@/lib/utils";
 import { parseVerdict } from "../../utils/formatters";
+import { toast } from "@/hooks/useToast";
 
 export const CaseDetailsPage = observer(() => {
   const { id } = useParams();
@@ -17,7 +18,10 @@ export const CaseDetailsPage = observer(() => {
 
   useEffect(() => {
     if (id) {
-      caseStore.loadCaseById(id);
+      caseStore.loadCaseById(id).then((ok) => {
+        if (ok === false)
+          toast.error("Couldn't load this case. Please try again.");
+      });
     }
   }, [id]);
 

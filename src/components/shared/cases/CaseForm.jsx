@@ -7,6 +7,7 @@ import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
 import { caseStore } from "../../../store/CaseStore";
 import { CATEGORIES } from "../../../utils/categories";
+import { toast } from "@/hooks/useToast";
 
 export const CaseForm = observer(({ onSuccess }) => {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ export const CaseForm = observer(({ onSuccess }) => {
     const caseId = await caseStore.submitCase();
 
     if (caseId) {
+      toast.success("Case filed — the AI Judge is ruling…");
       onSuccess?.();
       navigate(`/case/${caseId}`);
     }

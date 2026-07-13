@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 import { authStore } from "@/store/AuthStore";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "@/hooks/useToast";
 
 function Signup() {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ function Signup() {
     });
 
     if (success) {
+      toast.success("Account created successfully.");
       navigate("/login", { replace: true });
     }
   }
