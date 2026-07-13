@@ -14,6 +14,7 @@ import { authStore } from "@/store/AuthStore";
 
 export const MyCasesPage = observer(() => {
   const navigate = useNavigate();
+
   useEffect(() => {
     caseStore.loadMyCases();
   }, [authStore.user]);

@@ -14,7 +14,7 @@ export default function AddCaseModal() {
         className="bg-primary hover:bg-primary/90 text-white gap-2 cursor-pointer"
       >
         <Plus className="h-4 w-4" />
-        File New Case
+        New Case
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
