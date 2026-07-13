@@ -30,8 +30,8 @@ export default observer(function Navbar() {
             <Button
               variant="outline"
               className="cursor-pointer"
-              onClick={() => {
-                authStore.logout();
+              onClick={async () => {
+                await authStore.logout();
                 navigate("/login");
               }}
             >
