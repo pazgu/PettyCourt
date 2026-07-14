@@ -32,13 +32,13 @@ export const CaseFilters = observer(() => {
             value={caseStore.sortBy}
             onValueChange={(val) => caseStore.setSortBy(val)}
           >
-            <SelectTrigger className="h-12 rounded-2xl border-slate-200 bg-white focus:ring-amber-500 text-base font-normal text-slate-700 px-4 w-full flex items-center">
+            <SelectTrigger className="!h-12 rounded-2xl border-slate-200 bg-white focus:ring-amber-500 text-base font-normal text-slate-700 px-4 w-full flex items-center">
               <div className="flex items-center gap-2">
                 <ArrowUpDown className="h-4 w-4 text-slate-400 shrink-0" />
                 <SelectValue placeholder="Newest" />
               </div>
             </SelectTrigger>
-            <SelectContent className="rounded-2xl ">
+            <SelectContent className="rounded-2xl p-2">
               <SelectItem value="newest">Newest</SelectItem>
               <SelectItem value="oldest">Oldest</SelectItem>
             </SelectContent>
