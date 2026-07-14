@@ -94,9 +94,11 @@ export const MyCasesPage = observer(() => {
   }
 
   const winnerBadgeStyles = {
-    plaintiff: "bg-emerald-100 hover:bg-emerald-100 text-emerald-800 border-emerald-200",
+    plaintiff:
+      "bg-emerald-100 hover:bg-emerald-100 text-emerald-800 border-emerald-200",
     defendant: "bg-rose-100 hover:bg-rose-100 text-rose-800 border-rose-200",
-    split: "bg-yellow-100 hover:bg-yellow-100 text-yellow-800 border-yellow-200",
+    split:
+      "bg-yellow-100 hover:bg-yellow-100 text-yellow-800 border-yellow-200",
   };
 
   async function handleDeleteCase() {
@@ -169,10 +171,13 @@ export const MyCasesPage = observer(() => {
                       <span>{myCase.category}</span>
                       <span>•</span>
                       <span>
-                        {new Date(myCase.created_at).toLocaleDateString("en-US", {
-                          month: "long",
-                          day: "numeric",
-                        })}
+                        {new Date(myCase.created_at).toLocaleDateString(
+                          "en-US",
+                          {
+                            month: "long",
+                            day: "numeric",
+                          },
+                        )}
                       </span>
                     </div>
 
@@ -210,7 +215,8 @@ export const MyCasesPage = observer(() => {
             <DialogHeader>
               <DialogTitle>Delete this case?</DialogTitle>
               <DialogDescription>
-                This action will permanently remove the case from your docket. This cannot be undone.
+                This action will permanently remove the case from your docket.
+                This cannot be undone.
               </DialogDescription>
             </DialogHeader>
 
