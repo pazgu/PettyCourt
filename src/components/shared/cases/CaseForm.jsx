@@ -18,7 +18,7 @@ export const CaseForm = observer(({ onSuccess }) => {
     const caseId = await caseStore.submitCase();
 
     if (caseId) {
-      toast.success("Case filed — the AI Judge is ruling…");
+      toast.success("Case created successfully");
       onSuccess?.();
       navigate(`/case/${caseId}`);
     }
