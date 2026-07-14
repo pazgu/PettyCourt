@@ -44,7 +44,7 @@ export const CaseCard = observer(({ caseItem }) => {
       return (
         <span className="inline-flex items-center gap-1.5 bg-slate-50 text-slate-500 px-3 py-1.5 rounded-full text-xs font-semibold border border-slate-200">
           <HelpCircle className="h-3.5 w-3.5" />
-          Awaiting Verdict
+          Jury: Awaiting Votes
         </span>
       );
     }
@@ -53,7 +53,7 @@ export const CaseCard = observer(({ caseItem }) => {
       return (
         <span className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-full text-xs font-bold border border-emerald-200/60">
           <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
-          Winner: plaintiff
+          Jury: Plaintiff Wins
         </span>
       );
     }
@@ -62,7 +62,7 @@ export const CaseCard = observer(({ caseItem }) => {
       return (
         <span className="inline-flex items-center gap-1.5 bg-rose-50 text-rose-700 px-3 py-1.5 rounded-full text-xs font-bold border border-rose-200/60">
           <XCircle className="h-3.5 w-3.5 text-rose-600" />
-          Ruled: Mistrial
+          Jury: Mistrial
         </span>
       );
     }
@@ -82,6 +82,19 @@ export const CaseCard = observer(({ caseItem }) => {
       : text;
   };
 
+  const winner = caseItem.verdicts?.winner;
+
+  const winnerBadgeStyles = {
+    plaintiff:
+      "bg-emerald-100 hover:bg-emerald-100 text-emerald-800 border-emerald-200",
+    defendant: "bg-rose-100 hover:bg-rose-100 text-rose-800 border-rose-200",
+    split:
+      "bg-yellow-100 hover:bg-yellow-100 text-yellow-800 border-yellow-200",
+  };
+
+  const currentBadgeStyle =
+    winnerBadgeStyles[winner] ?? winnerBadgeStyles.split;
+
   return (
     <Link
       to={`/case/${caseId}`}
@@ -98,6 +111,12 @@ export const CaseCard = observer(({ caseItem }) => {
 
       <div className="flex items-center gap-3 flex-wrap border-b border-slate-50 pb-3 m-0">
         {renderVerdictBadge()}
+
+        <span
+          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border transition-all ${currentBadgeStyle}`}
+        >
+          <span>Winner: {winner || "undecided"}</span>
+        </span>
 
         <span className="inline-flex items-center gap-1.5 bg-slate-50 text-slate-600 px-3 py-1.5 rounded-full text-xs font-medium border border-slate-200/60">
           <span>{categoryIcon}</span>
@@ -117,6 +136,9 @@ export const CaseCard = observer(({ caseItem }) => {
           <span className="font-semibold text-slate-600">
             {caseItem.plaintiff_id?.username || "Anonymous"}
           </span>
+        </span>
+        <span className="text-xs font-medium text-slate-500 select-none ml-3">
+          {new Date(caseItem.created_at).toLocaleDateString("en-US")}
         </span>
       </div>
 
