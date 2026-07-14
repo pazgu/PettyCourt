@@ -118,6 +118,9 @@ export const CaseCard = observer(({ caseItem }) => {
             {caseItem.plaintiff_id?.username || "Anonymous"}
           </span>
         </span>
+        <span className="text-xs font-medium text-slate-500 select-none ml-3">
+          {new Date(caseItem.created_at).toLocaleDateString("en-US")}
+        </span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
