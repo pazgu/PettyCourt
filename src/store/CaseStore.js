@@ -36,6 +36,10 @@ class CaseStore {
   categoryFilter = "all";
   sortBy = "newest";
 
+  currentPage = 0;
+  pageSize = 5;
+  hasMoreCases = true;
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -359,6 +363,9 @@ class CaseStore {
 
   async loadAllCases() {
     this.isLoadingCases = true;
+
+    const from = this.currentPage * this.pageSize;
+    const to = from + this.pageSize - 1;
     try {
       const { data, error } = await supabase
         .from("cases")
@@ -373,28 +380,45 @@ class CaseStore {
     )
   `,
         )
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: false })
+        .range(from, to);
 
       if (error) throw error;
       // console.log(data?.[0]);
 
       runInAction(() => {
-        this.cases = data || [];
+        if (this.currentPage === 0) {
+          this.cases = data || [];
+        } else {
+          this.cases = [...this.cases, ...(data || [])];
+        }
+
+        this.hasMoreCases = (data || []).length === this.pageSize;
       });
 
       if (data) {
         data.forEach((c) => this.loadVotesForCase(c.id));
       }
-
-      return true;
     } catch (err) {
       console.error("Error loading cases catalog:", err);
-      return false;
     } finally {
       runInAction(() => {
         this.isLoadingCases = false;
       });
     }
+  }
+
+  nextPage() {
+    if (this.hasMoreCases && !this.isLoadingCases) {
+      this.currentPage += 1;
+      this.loadAllCases();
+    }
+  }
+
+  resetPagination() {
+    this.currentPage = 0;
+    this.cases = [];
+    this.hasMoreCases = true;
   }
 
   get filteredCases() {
