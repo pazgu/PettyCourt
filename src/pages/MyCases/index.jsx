@@ -93,6 +93,12 @@ export const MyCasesPage = observer(() => {
     );
   }
 
+  const winnerBadgeStyles = {
+    plaintiff: "bg-emerald-100 hover:bg-emerald-100 text-emerald-800 border-emerald-200",
+    defendant: "bg-rose-100 hover:bg-rose-100 text-rose-800 border-rose-200",
+    split: "bg-yellow-100 hover:bg-yellow-100 text-yellow-800 border-yellow-200",
+  };
+
   async function handleDeleteCase() {
     if (!pendingDeleteCase) return;
 
@@ -143,9 +149,17 @@ export const MyCasesPage = observer(() => {
 
                     <Badge
                       variant="secondary"
-                      className="bg-emerald-50 text-emerald-700 border border-emerald-200 gap-1 rounded-full text-xs py-0.5 px-3 font-medium shrink-0"
+                      className={`gap-1 rounded-full text-xs py-0.5 px-3 font-medium shrink-0 border ${winnerBadgeStyles[myCase.winner] ?? winnerBadgeStyles.split}`}
                     >
-                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      <span
+                        className={`h-1.5 w-1.5 rounded-full animate-pulse ${
+                          myCase.winner === "plaintiff"
+                            ? "bg-emerald-500"
+                            : myCase.winner === "defendant"
+                              ? "bg-rose-500"
+                              : "bg-yellow-500"
+                        }`}
+                      />
                       {myCase.winner}
                     </Badge>
                   </div>
