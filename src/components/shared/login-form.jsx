@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export function LoginForm({ className, onSubmit, isLoading }) {
   return (
@@ -59,7 +60,7 @@ export function LoginForm({ className, onSubmit, isLoading }) {
                 </Button>
 
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="/signup">Sign up</a>
+                  Don&apos;t have an account? <Link to="/signup">Sign up</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import Login from "./pages/Auth/Login";
@@ -19,7 +19,7 @@ export default observer(function App() {
 
   return (
     <>
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route element={<RootLayout />}>
             <Route element={<PublicRoute />}>
@@ -37,7 +37,7 @@ export default observer(function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
       <Toaster />
     </>
   );
