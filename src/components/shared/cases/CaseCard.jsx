@@ -44,7 +44,7 @@ export const CaseCard = observer(({ caseItem }) => {
       return (
         <span className="inline-flex items-center gap-1.5 bg-slate-50 text-slate-500 px-3 py-1.5 rounded-full text-xs font-semibold border border-slate-200">
           <HelpCircle className="h-3.5 w-3.5" />
-          Awaiting Verdict
+          Jury: Awaiting Votes
         </span>
       );
     }
@@ -53,7 +53,7 @@ export const CaseCard = observer(({ caseItem }) => {
       return (
         <span className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-full text-xs font-bold border border-emerald-200/60">
           <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
-          Winner: plaintiff
+          Jury: Plaintiff Wins
         </span>
       );
     }
@@ -62,7 +62,7 @@ export const CaseCard = observer(({ caseItem }) => {
       return (
         <span className="inline-flex items-center gap-1.5 bg-rose-50 text-rose-700 px-3 py-1.5 rounded-full text-xs font-bold border border-rose-200/60">
           <XCircle className="h-3.5 w-3.5 text-rose-600" />
-          Ruled: Mistrial
+          Jury: Mistrial
         </span>
       );
     }
