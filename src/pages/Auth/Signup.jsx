@@ -32,7 +32,7 @@ function Signup() {
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-lg">
-        <SignupForm onSubmit={handleSignup} />
+        <SignupForm onSubmit={handleSignup} isLoading={authStore.loading} />
 
         {authStore.error && (
           <p className="mt-4 text-center text-red-500">{authStore.error}</p>
