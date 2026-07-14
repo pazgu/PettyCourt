@@ -101,8 +101,10 @@ export const MyCasesPage = observer(() => {
 
     if (success) {
       setPendingDeleteCase(null);
+      toast.success("Case deleted successfully.");
     } else {
       setDeleteError("The case could not be deleted. Please try again.");
+      toast.error("The case could not be deleted. Please try again.");
     }
   }
 
