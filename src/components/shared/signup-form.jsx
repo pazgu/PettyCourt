@@ -13,6 +13,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { Link } from "react-router-dom";
 
 export function SignupForm({ ...props }) {
   return (
@@ -34,7 +35,7 @@ export function SignupForm({ ...props }) {
               <FieldLabel htmlFor="email">Email</FieldLabel>
               <Input
                 id="email"
-                name ="email"
+                name="email"
                 type="email"
                 placeholder="m@example.com"
                 required
@@ -55,7 +56,12 @@ export function SignupForm({ ...props }) {
               <FieldLabel htmlFor="confirm-password">
                 Confirm Password
               </FieldLabel>
-              <Input id="confirm-password" name="confirm-password" type="password" required />
+              <Input
+                id="confirm-password"
+                name="confirm-password"
+                type="password"
+                required
+              />
               <FieldDescription>Please confirm your password.</FieldDescription>
             </Field>
             <FieldGroup>
@@ -65,7 +71,7 @@ export function SignupForm({ ...props }) {
                   Sign up with Google
                 </Button> */}
                 <FieldDescription className="px-6 text-center">
-                  Already have an account? <a href="/login">Sign in</a>
+                  Already have an account? <Link to="/login">Sign in</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>
