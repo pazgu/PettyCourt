@@ -49,7 +49,7 @@ class AuthStore {
         return false;
       }
 
-       runInAction(() => {
+      runInAction(() => {
         this.loading = false;
       });
 

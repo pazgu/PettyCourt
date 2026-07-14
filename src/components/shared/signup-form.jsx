@@ -13,9 +13,10 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 
-export function SignupForm({ ...props }) {
+export function SignupForm({ isLoading, ...props }) {
   return (
     <Card {...props}>
       <CardHeader>
@@ -66,7 +67,16 @@ export function SignupForm({ ...props }) {
             </Field>
             <FieldGroup>
               <Field>
-                <Button type="submit">Create Account</Button>
+                <Button type="submit" disabled={isLoading}>
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Creating account...
+                    </>
+                  ) : (
+                    "Create Account"
+                  )}
+                </Button>
                 {/* <Button variant="outline" type="button">
                   Sign up with Google
                 </Button> */}
